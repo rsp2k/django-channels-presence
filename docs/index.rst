@@ -3,10 +3,10 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-django-channels-presence
+django-channels-presence-4.0
 ========================
 
-``django-channels-presence`` is a Django app which adds "rooms" and presence
+``django-channels-presence-4.0`` is a Django app which adds "rooms" and presence
 notification capability to a Django application using `django-channels
 <https://github.com/andrewgodwin/channels>`_.  If you're building a chat room
 or other site that needs to keep track of "who is connected right now", this
@@ -17,7 +17,7 @@ Quick install
 
 1. Install with pip::
 
-    pip install django-channels-presence
+    pip install django-channels-presence-4.0
 
 2. Add ``"channels_presence"`` to ``INSTALLED_APPS``::
 
