@@ -6,6 +6,11 @@
 django-channels-presence-4.0
 ========================
 
+.. button-link:: https://ko-fi.com/andreperez
+    Buy me a Coffee!
+    :color: success
+    :shadow:
+
 ``django-channels-presence-4.0`` is a Django app which adds "rooms" and presence
 notification capability to a Django application using `django-channels
 <https://github.com/andrewgodwin/channels>`_.  If you're building a chat room
@@ -31,8 +36,6 @@ Quick install
 
 Motivation
 ~~~~~~~~~~
-
-```{image}https://ko-fi.com/img/githubbutton_sm.svg{https://ko-fi.com/andreperez} Buy me a Coffee!```
 
 This application builds on top of
 `django-channels <https://github.com/django/channels>`_. You should have a good
