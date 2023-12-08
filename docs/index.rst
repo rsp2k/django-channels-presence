@@ -32,6 +32,8 @@ Quick install
 Motivation
 ~~~~~~~~~~
 
+```{image}https://ko-fi.com/img/githubbutton_sm.svg{https://ko-fi.com/andreperez} Buy me a Coffee!```
+
 This application builds on top of
 `django-channels <https://github.com/django/channels>`_. You should have a good
 understanding of how it works before diving in here.  To enable groups and

@@ -8,6 +8,8 @@
 [![Django 4.2](https://img.shields.io/badge/django-4.2-green.svg)](https://docs.djangoproject.com/en/4.2/)
 [![Django Channels 4.0](https://img.shields.io/badge/channels-4.0-silver.svg)](https://channels.readthedocs.io/en/latest/)
 
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/Q5Q8RZNMO)
+
 A reusable Django app for implementing "presence" and "rooms" using
 `django-channels <https://github.com/andrewgodwin/channels>`.
 
