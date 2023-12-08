@@ -1,4 +1,3 @@
-import json
 from datetime import timedelta
 
 from django.db import models
@@ -44,7 +43,7 @@ class Presence(models.Model):
 
 class RoomManager(models.Manager):
     def add(self, room_channel_name, user_channel_name, user=None):
-        room, created = Room.objects.get_or_create(channel_name=room_channel_name)
+        room, _ = Room.objects.get_or_create(channel_name=room_channel_name)
         room.add_presence(user_channel_name, user)
         return room
 
@@ -102,7 +101,7 @@ class Room(models.Model):
         if age_in_seconds is None:
             age_in_seconds = getattr(settings, "CHANNELS_PRESENCE_MAX_AGE", 60)
 
-        num_deleted, num_per_type = Presence.objects.filter(
+        num_deleted, _ = Presence.objects.filter(
             room=self, last_seen__lt=now() - timedelta(seconds=age_in_seconds)
         ).delete()
         if num_deleted > 0:
