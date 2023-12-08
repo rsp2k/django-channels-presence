@@ -216,5 +216,3 @@ Example:
             called from channel layer messages with `"type": "forward.message"`.
             """
             self.send(event["message"])
-
-

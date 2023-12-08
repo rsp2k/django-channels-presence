@@ -190,6 +190,61 @@ See the documentation for
     }
     
 
+5. Pruning without Celery
+-------------------------
+
+You can also use asyncio tasks to prune stale connections without using celery.
+
+.. code-block:: python
+
+    # app/channels.py: App consumer definition
+    # Pruning connection without setting a celery beat schedule
+
+    class AppConsumer(WebsocketConsumer):
+        class MessageType(Enum):
+        PING = 'ping'
+        CLOSE = 'close'
+        ... # other message types
+
+        async def connect(self):
+            if self.scope["user"] == AnonymousUser():
+                await self.close()
+            await self.add_channel()
+            self.task = asyncio.get_event_loop().create_task(self.countdown_task())
+            await self.accept()
+
+        async def disconnect(self, close_code):
+            await self.remove_channel()
+            await self.close()
+
+        async def countdown_task(self):
+            await asyncio.sleep(settings.CHANNELS_PRESENCE_MAX_AGE)
+            await self.prune_rooms()
+            await self.close()
+
+        async def recreate_task(self):
+            self.task.cancel()
+            await self.touch_channel()
+            self.task = asyncio.get_event_loop().create_task(self.countdown_task())
+            await self.send(text_data=json.dumps({
+                'message': 'pong',
+            }))
+
+    async def receive(self, text_data=None, bytes_data=None):
+        try:
+            data = json.loads(text_data)
+            message_type = data.get('type', self.MessageType.CLOSE.value)
+            if message_type == self.MessageType.PING.value:
+                await self.recreate_task()
+            ... # other message types
+            else:
+                await self.close()
+        except Exception as e:
+            await self.send(text_data=json.dumps({
+                'message': f'ERROR - {e}',
+            }))
+
+
 5. Listening for changes in presence
 ------------------------------------
 
