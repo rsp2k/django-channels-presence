@@ -7,9 +7,10 @@ django-channels-presence-4.0
 ========================
 
 .. button-link:: https://ko-fi.com/andreperez
-    Buy me a Coffee!
     :color: success
     :shadow:
+    
+    Buy me a Coffee!
 
 ``django-channels-presence-4.0`` is a Django app which adds "rooms" and presence
 notification capability to a Django application using `django-channels
