@@ -1,9 +1,7 @@
-========================
-django-channels-presence-4.0
-========================
+# django-channels-presence-4.0
 
 A reusable Django app for implementing "presence" and "rooms" using
-`django-channels <https://github.com/andrewgodwin/channels>`_.
+`django-channels <https://github.com/andrewgodwin/channels>`.
 
 - Docs: https://django-channels-presence-40.readthedocs.io/en/latest/
 
