@@ -245,7 +245,7 @@ You can also use asyncio tasks to prune stale connections without using celery.
             }))
 
 
-5. Listening for changes in presence
+6. Listening for changes in presence
 ------------------------------------
 
 Use the ``channels_presence.signals.presence_changed`` signal to be notified when
