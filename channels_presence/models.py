@@ -5,14 +5,18 @@ from channels.layers import get_channel_layer
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.db.models import When, Case, F, Q, Value
+from django.db.models.functions import Concat, Right
 from django.utils.timezone import now
 
 from channels_presence.signals import presence_changed
+from django.db.models.fields.reverse_related import ForeignObjectRel
 
 channel_layer = get_channel_layer()
 
+
 class PresenceQuerySet(models.QuerySet):
-    def room_presence_list(self, room):
+    def presence_list(self, room):
         return list(self.filter(
             room__channel_name=room
         ).annotate(
@@ -28,8 +32,8 @@ class PresenceManager(models.Manager):
     def get_queryset(self):
         return PresenceQuerySet(self.model, using=self._db)
 
-    def room_presence_list(self, room):
-        return self.get_queryset().room_presense_list(room)
+    def presence_list(self, room):
+        return self.get_queryset().presense_list(room)
 
     def touch(self, channel_name):
         self.filter(channel_name=channel_name).update(last_seen=now())
@@ -77,7 +81,24 @@ class RoomManager(models.Manager):
             room.prune_presences(age)
 
     def prune_rooms(self):
-        Room.objects.filter(presence__isnull=True).delete()
+        def has_related_foreign_keys(obj):
+            """
+            Check if a given model instance has any related objects through ForeignKeys.
+            """
+            for field in obj._meta.get_fields():
+                # Only look for reverse relationships that are foreign keys
+                if isinstance(field, ForeignObjectRel) and field.related_model:
+                    related_manager = getattr(obj, field.get_accessor_name())
+                    if related_manager.exists():
+                        return True
+            return False
+
+        empty_rooms = Room.objects.filter(presence__isnull=True)
+        for room in empty_rooms:
+            if not has_related_foreign_keys(room):
+                room.delete()
+
+        return
 
 
 class Room(models.Model):

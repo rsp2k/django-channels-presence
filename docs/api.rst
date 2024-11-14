@@ -39,7 +39,10 @@ Models
 
 ``Room.objects.prune_rooms()``
     Remove any rooms that have no associated ``Presence`` models.
-  
+
+``Room.objects.presence_list(room)``
+    Return list of 'channel_name', 'user_name', 'short_name' for room
+
 **Instance properties**:
 
 ``room.channel_name``
