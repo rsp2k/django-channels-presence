@@ -11,8 +11,26 @@ from channels_presence.signals import presence_changed
 
 channel_layer = get_channel_layer()
 
+class PresenceQuerySet(models.QuerySet):
+    def room_presence_list(self, room):
+        return list(self.filter(
+            room__channel_name=room
+        ).annotate(
+            user_name=Case(
+                When(~Q(user__first_name=''), then=F('user__first_name')),
+                default=F('user__username')
+            ),
+            short_name=Concat(Value('peer-'), Right('channel_name', 6))
+        ).values('channel_name', 'user_name', 'short_name'))
+
 
 class PresenceManager(models.Manager):
+    def get_queryset(self):
+        return PresenceQuerySet(self.model, using=self._db)
+
+    def room_presence_list(self, room):
+        return self.get_queryset().room_presense_list(room)
+
     def touch(self, channel_name):
         self.filter(channel_name=channel_name).update(last_seen=now())
 
